@@ -23,6 +23,6 @@
 #define NOK 1
 
 uint8 TIMER_init(void);
-uint8 PWM_changeDutyC(uint8 Duty_Cycle,uint8 Timer_ID);
+uint8 CHANGE_PWM(uint8 TIMER_ID,uint8 PWM_DUTYCYCLE_chA)
 
 #endif /* TIMER_H_ */
