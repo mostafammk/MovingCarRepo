@@ -12,8 +12,8 @@
 #include "REG_Lib.h"
 #include "STD_TYPES.h"
 #include "TIMER_cnfg.h"
-#include "Interrupts.h"
-//#include <avr/Interrupt.h>
+//#include "Interrupts.h"
+#include <avr/Interrupt.h>
 //#include <avr/io.h>
 
 
@@ -23,6 +23,6 @@
 #define NOK 1
 
 uint8 TIMER_init(void);
-uint8 CHANGE_PWM(uint8 TIMER_ID,uint8 PWM_DUTYCYCLE_chA)
+uint8 PWM_changeDutyC(uint8 Duty_Cycle,uint8 Timer_ID);
 
 #endif /* TIMER_H_ */
