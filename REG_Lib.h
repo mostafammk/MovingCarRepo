@@ -152,4 +152,6 @@
 #define SREG_I 7
 
 
+#define NULL (void *)0
+
 #endif /* REG_LIB_H_ */

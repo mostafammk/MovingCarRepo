@@ -16,8 +16,8 @@
 
 
 #define MAX_NUM_OF_TIMERS		(uint8)3
-#define OK 0
-#define NOK 1
+#define OK 1
+#define NOK 0
 
 uint8 TIMER_init(void);
 
