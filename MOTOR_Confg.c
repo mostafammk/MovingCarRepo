@@ -7,7 +7,6 @@
 #include "MOTOR_confg.h"
 MOTOR_cnfg_t MOTOR_cnfg_arr [NUM_OF_Motors] =
 {
-		{MOTOR1,FORWARD},
-		{MOTOR2,REVERSE}
+		{MOTOR1,FORWARD}
 };
 

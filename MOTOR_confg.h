@@ -8,7 +8,9 @@
 #ifndef MOTOR_CONFG_H_
 #define MOTOR_CONFG_H_
 
-typedef enum {MOtor1,Motor2,NUM_OF_Motors}Motors_N;
+#include "DIO.h"
+
+typedef enum {MOtor1,NUM_OF_Motors}Motors_N;
 
 
 #define MOTOR1 0
