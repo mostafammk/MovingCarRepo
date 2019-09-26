@@ -163,6 +163,10 @@ uint8 TIMER_init(void)
 					{
 						TCNT0 = TIMER_cnfg_arr[Loop_index].Normal_PreloadedValue;
 					}
+					else if(TIMER_cnfg_arr[Loop_index].Normal_PreloadedValue==NA)
+					{
+						
+					}
 					else
 					{
 						Init_check[Loop_index]=NOT_INITIALIZED;
@@ -180,6 +184,10 @@ uint8 TIMER_init(void)
 						SREG |= (1<<SREG_I);
 					}
 					else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
+					{
+						TIMSK &= ~0x01;
+					}
+					else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
 					{
 						TIMSK &= ~0x01;
 					}
@@ -243,6 +251,8 @@ uint8 TIMER_init(void)
 						 */
 						switch(TIMER_cnfg_arr[Loop_index].OC_ChA_Mode)
 						{
+						case NA:
+							break;
 						case OC_DISABLED:
 							break;
 
@@ -274,6 +284,10 @@ uint8 TIMER_init(void)
 						else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
 						{
 							TIMSK &= ~0x02;
+						}
+						else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA==NA)
+						{
+							TIMSK &= ~0x02;		
 						}
 						else
 						{
@@ -347,6 +361,9 @@ uint8 TIMER_init(void)
 							case OC_INVERTING_PWM:
 								TCCR0 |= (3<<TCCR0_COM00);
 								break;
+								
+							case NA:
+							break;
 
 							default:
 								Init_check[Loop_index]=NOT_INITIALIZED;
@@ -364,6 +381,11 @@ uint8 TIMER_init(void)
 							else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
 							{
 								TIMSK &= ~0x02;
+							}
+							else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+							{
+								TIMSK &= ~0x02;
+
 							}
 							else
 							{
@@ -427,6 +449,8 @@ uint8 TIMER_init(void)
 								 */
 								switch(TIMER_cnfg_arr[Loop_index].OC_ChA_Mode)
 								{
+								case NA:
+								break;
 								case OC_DISABLED:
 									break;
 
@@ -452,6 +476,10 @@ uint8 TIMER_init(void)
 									SREG |= (1<<SREG_I);
 								}
 								else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
+								{
+									TIMSK &= ~0x02;
+								}
+								else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
 								{
 									TIMSK &= ~0x02;
 								}
@@ -585,6 +613,10 @@ uint8 TIMER_init(void)
 						{
 							TIMSK &= ~0x04;
 						}
+						else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+						{
+							TIMSK &= ~0x04;
+						}
 						else
 						{
 							Init_check[Loop_index]=NOT_INITIALIZED;
@@ -610,6 +642,8 @@ uint8 TIMER_init(void)
 							{
 							case OC_DISABLED:
 								break;
+							case NA:
+								break;
 							case OC_TOGGLE:
 								TCCR1A |= (1u<<TCCR1A_COM1A0);
 								break;
@@ -622,7 +656,6 @@ uint8 TIMER_init(void)
 							default:
 								Init_check[Loop_index]=NOT_INITIALIZED;
 								retval = NOK;
-								PORTC = 0x01;
 								break;
 							}
 							/*
@@ -632,6 +665,8 @@ uint8 TIMER_init(void)
 							{
 							case OC_DISABLED:
 								break;
+							case NA:
+								break;							
 							case OC_TOGGLE:
 								TCCR1A |= (1u<<TCCR1A_COM1B0);
 								break;
@@ -644,7 +679,6 @@ uint8 TIMER_init(void)
 							default:
 								Init_check[Loop_index]=NOT_INITIALIZED;
 								retval = NOK;
-								PORTC = 0x02;
 								break;
 							}
 							/*
@@ -679,35 +713,40 @@ uint8 TIMER_init(void)
 							default:
 								Init_check[Loop_index]=NOT_INITIALIZED;
 								retval = NOK;
-								PORTC = 0x04;
 								break;
 							}
 							/*
 							 * Setting the Compare value of Timer1 Channel A
 							 */
-							if(TIMER_cnfg_arr[Loop_index].OCR_ChA <= 0xFFFF)
+							if(TIMER_cnfg_arr[Loop_index].OCR_ChA < 0xFFFF)
 							{
 								OCR1AL = TIMER_cnfg_arr[Loop_index].OCR_ChA;
+							}
+							else if(TIMER_cnfg_arr[Loop_index].OCR_ChA== NA_16)
+							{
+								
 							}
 							else
 							{
 								Init_check[Loop_index]=NOT_INITIALIZED;
 								retval = NOK;
-								PORTC = 0x08;
 							}
 
 							/*
 							 * Setting the Compare value of Timer1 Channel A
 							 */
-							if(TIMER_cnfg_arr[Loop_index].OCR_ChB <= 0xFFFF)
+							if(TIMER_cnfg_arr[Loop_index].OCR_ChB < 0xFFFF)
 							{
 								OCR1BL = TIMER_cnfg_arr[Loop_index].OCR_ChB;
+							}
+							else if(TIMER_cnfg_arr[Loop_index].OCR_ChB== NA_16)
+							{
+								
 							}
 							else
 							{
 								Init_check[Loop_index]=NOT_INITIALIZED;
 								retval = NOK;
-								PORTC = 0x10;
 							}
 
 							/*
@@ -723,11 +762,14 @@ uint8 TIMER_init(void)
 							{
 								TIMSK &= ~0x10;
 							}
+							else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+							{
+								TIMSK &= ~0x10;
+							}
 							else
 							{
 								Init_check[Loop_index]=NOT_INITIALIZED;
 								retval = NOK;
-								PORTC = 0x20;
 							}
 							/*
 							 * Setting weather the timer1 CHB operates in Interrupt or pooling mode
@@ -741,11 +783,14 @@ uint8 TIMER_init(void)
 							{
 								TIMSK &= ~0x08;
 							}
+							else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+							{
+								TIMSK &= ~0x10;
+							}
 							else
 							{
 								Init_check[Loop_index]=NOT_INITIALIZED;
 								retval = NOK;
-								PORTC = 0x40;
 							}
 							break;
 
@@ -765,6 +810,8 @@ uint8 TIMER_init(void)
 								{
 								case OC_DISABLED:
 									break;
+								case NA:
+								break;
 								case OC_TOGGLE:
 									TCCR1A |= (1u<<TCCR1A_COM1A0);
 									break;
@@ -777,7 +824,28 @@ uint8 TIMER_init(void)
 								default:
 									Init_check[Loop_index]=NOT_INITIALIZED;
 									retval = NOK;
-									PORTC = 0x01;
+									break;
+								}
+								
+								
+								switch(TIMER_cnfg_arr[Loop_index].OC_ChB_Mode)
+								{
+								case OC_DISABLED:
+									break;
+								case NA:
+								break;
+								case OC_TOGGLE:
+									TCCR1A |= (1u<<TCCR1A_COM1B0);
+									break;
+								case OC_NONINVERTING_PWM:
+									TCCR1A |= (1u<<TCCR1A_COM1B1);
+									break;
+								case OC_INVERTING_PWM:
+									TCCR1A |= (3u<<TCCR1A_COM1B0);
+									break;
+								default:
+									Init_check[Loop_index]=NOT_INITIALIZED;
+									retval = NOK;
 									break;
 								}
 								/*
@@ -812,7 +880,6 @@ uint8 TIMER_init(void)
 								default:
 									Init_check[Loop_index]=NOT_INITIALIZED;
 									retval = NOK;
-									PORTC = 0x02;
 									break;
 								}
 
@@ -829,7 +896,6 @@ uint8 TIMER_init(void)
 								{
 									Init_check[Loop_index]=NOT_INITIALIZED;
 									retval = NOK;
-									PORTC = 0x04;
 								}
 
 								/*
@@ -845,28 +911,7 @@ uint8 TIMER_init(void)
 								{
 									Init_check[Loop_index]=NOT_INITIALIZED;
 									retval = NOK;
-									PORTC = 0x08;
 								}
-
-
-/*
-								 Setting the tob Value of ICR in both cases chA chB
-
-								if (TIMER_cnfg_arr[Loop_index].ICR>=0 && TIMER_cnfg_arr[Loop_index].ICR < 0xffff)
-								{
-									ICR1L=TIMER_cnfg_arr[Loop_index].ICR;
-								}
-								else if(TIMER_cnfg_arr[Loop_index].ICR== NA_16)
-								{
-									ICR1L=0xffff ;
-								}
-								else
-								{
-									Init_check[Loop_index]=NOT_INITIALIZED;
-									retval = NOK;
-									PORTC = 0x10;
-								}
-*/
 
 								/*
 								 * Setting weather the timer1 CHA operates in Interrupt or pooling mode
@@ -881,11 +926,14 @@ uint8 TIMER_init(void)
 								{
 									TIMSK &= ~0x10;
 								}
+								else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+								{
+									TIMSK &= ~0x10;
+								}
 								else
 								{
 									Init_check[Loop_index]=NOT_INITIALIZED;
 									retval = NOK;
-									PORTC = 0x20;
 								}
 
 								/*
@@ -900,11 +948,14 @@ uint8 TIMER_init(void)
 								{
 									TIMSK &= ~0x08;
 								}
+								else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+								{
+									TIMSK &= ~0x10;
+								}
 								else
 								{
 									Init_check[Loop_index]=NOT_INITIALIZED;
 									retval = NOK;
-									PORTC = 0x40;
 								}
 
 
@@ -926,6 +977,8 @@ uint8 TIMER_init(void)
 									{
 									case OC_DISABLED:
 										break;
+									case NA:
+									break;									
 									case OC_TOGGLE:
 										TCCR1A |= (1u<<TCCR1A_COM1A0);
 										break;
@@ -940,6 +993,30 @@ uint8 TIMER_init(void)
 										retval = NOK;
 										break;
 									}
+									
+									
+									switch(TIMER_cnfg_arr[Loop_index].OC_ChB_Mode)
+									{
+									case OC_DISABLED:
+										break;
+									case NA:
+										break;
+									case OC_TOGGLE:
+										TCCR1A |= (1u<<TCCR1A_COM1B0);
+										break;
+									case OC_NONINVERTING_PWM:
+										TCCR1A |= (1u<<TCCR1A_COM1B1);
+										break;
+									case OC_INVERTING_PWM:
+										TCCR1A |= (3u<<TCCR1A_COM1B0);
+										break;
+									default:
+										Init_check[Loop_index]=NOT_INITIALIZED;
+										retval = NOK;
+										break;
+									}
+									
+									
 									/*
 									 * Setting Timer1 Prescaler
 									 */
@@ -1005,23 +1082,6 @@ uint8 TIMER_init(void)
 									}
 
 									/*
-									 * Setting the top value of Timer1 in both cases of chA or chB
-									 */
-/*									if (TIMER_cnfg_arr[Loop_index].ICR>=0 && TIMER_cnfg_arr[Loop_index].ICR < 0xffff)
-									{
-										ICR1L=TIMER_cnfg_arr[Loop_index].ICR;
-									}
-									else if(TIMER_cnfg_arr[Loop_index].ICR== NA_16)
-									{
-										ICR1L=0xffff ;
-									}
-									else
-									{
-										Init_check[Loop_index]=NOT_INITIALIZED;
-										retval = NOK;
-									}*/
-
-									/*
 									 * Setting weather the timer1 CHA operates in Interrupt or pooling mode
 									 */
 									if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == INTERRUPT)
@@ -1031,6 +1091,10 @@ uint8 TIMER_init(void)
 
 									}
 									else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
+									{
+										TIMSK &= ~0x10;
+									}
+									else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
 									{
 										TIMSK &= ~0x10;
 									}
@@ -1052,6 +1116,10 @@ uint8 TIMER_init(void)
 									else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChB == POOLING)
 									{
 										TIMSK &= ~0x08;
+									}
+									else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+									{
+										TIMSK &= ~0x10;
 									}
 									else
 									{
@@ -1098,6 +1166,10 @@ uint8 TIMER_init(void)
 							{
 								TCNT2 = TIMER_cnfg_arr[Loop_index].Normal_PreloadedValue;
 							}
+							else if(TIMER_cnfg_arr[Loop_index].Normal_PreloadedValue>=0xff)
+							{
+								
+							}
 							else
 							{
 								Init_check[Loop_index]=NOT_INITIALIZED;
@@ -1115,6 +1187,10 @@ uint8 TIMER_init(void)
 								SREG |= (1<<SREG_I);
 							}
 							else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
+							{
+								TIMSK &= ~0x40;
+							}
+							else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
 							{
 								TIMSK &= ~0x40;
 							}
@@ -1175,9 +1251,13 @@ uint8 TIMER_init(void)
 								/*
 								 * Setting the Compare value
 								 */
-								if(TIMER_cnfg_arr[Loop_index].OCR_ChA <= 0xFF)
+								if(TIMER_cnfg_arr[Loop_index].OCR_ChA < 0xFF)
 								{
 									OCR2 = TIMER_cnfg_arr[Loop_index].OCR_ChA;
+								}
+								if(TIMER_cnfg_arr[Loop_index].OCR_ChA == 0xFF)
+								{
+									
 								}
 								else
 								{
@@ -1192,7 +1272,8 @@ uint8 TIMER_init(void)
 								{
 								case OC_DISABLED:
 									break;
-
+								case NA:
+									break;
 								case OC_TOGGLE:
 									TCCR2 |= (1<<TCCR2_COM20);
 									break;
@@ -1219,6 +1300,10 @@ uint8 TIMER_init(void)
 									SREG |= (1<<SREG_I);
 								}
 								else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
+								{
+									TIMSK &= ~0x80;
+								}
+								else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
 								{
 									TIMSK &= ~0x80;
 								}
@@ -1297,6 +1382,8 @@ uint8 TIMER_init(void)
 									{
 									case OC_DISABLED:
 										break;
+									case NA:
+										break;
 
 									case OC_NONINVERTING_PWM:
 										TCCR2 |= (1<<TCCR2_COM21);
@@ -1320,6 +1407,10 @@ uint8 TIMER_init(void)
 										SREG |= (1<<SREG_I);
 									}
 									else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
+									{
+										TIMSK &= ~0x80;
+									}
+									else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
 									{
 										TIMSK &= ~0x80;
 									}
@@ -1398,6 +1489,8 @@ uint8 TIMER_init(void)
 										{
 										case OC_DISABLED:
 											break;
+										case NA:
+											break;
 
 										case OC_NONINVERTING_PWM:
 											TCCR2 |= (1<<TCCR2_COM21);
@@ -1421,6 +1514,10 @@ uint8 TIMER_init(void)
 											SREG |= (1<<SREG_I);
 										}
 										else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == POOLING)
+										{
+											TIMSK &= ~0x80;
+										}
+										else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
 										{
 											TIMSK &= ~0x80;
 										}
