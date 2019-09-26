@@ -10,6 +10,6 @@
 #include "DIO.h"
 #include "TIMER.h"
 
-
+uint8 SERVICE_init (void);
 uint8 Delay(uint8 TIMER_ID,uint32 Delay);
 #endif /* SERVICE_H_ */

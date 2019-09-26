@@ -5,7 +5,7 @@
  *      Author: alx
  */
 #include "Service.h"
-#include "TIMER.h"
+
 
 
 uint32 g_TimeCount=0;
@@ -14,6 +14,31 @@ void Counting_Time(void)
 {
 	g_TimeCount++;
 
+}
+
+uint8 SERVICE_init (void)
+{
+	uint8 funcStatus = OK;
+
+	if(DIO_init())
+	{
+
+	}
+	else
+	{
+		funcStatus = NOK;
+	}
+
+	if(TIMER_init())
+	{
+
+	}
+	else
+	{
+		funcStatus = NOK;
+	}
+
+	return funcStatus;
 }
 
 uint8 Delay(uint8 TIMER_ID,uint32 Delay_ms)
