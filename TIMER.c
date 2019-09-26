@@ -769,9 +769,9 @@ uint8 TIMER_init(void)
 							{
 								TIMSK &= ~0x08;
 							}
-							else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+							else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChB == NA)
 							{
-								TIMSK &= ~0x10;
+								TIMSK &= ~0x08;
 							}
 							else
 							{
@@ -934,7 +934,7 @@ uint8 TIMER_init(void)
 								{
 									TIMSK &= ~0x08;
 								}
-								else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+								else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChB == NA)
 								{
 									TIMSK &= ~0x10;
 								}
@@ -1103,7 +1103,7 @@ uint8 TIMER_init(void)
 									{
 										TIMSK &= ~0x08;
 									}
-									else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChA == NA)
+									else if(TIMER_cnfg_arr[Loop_index].Interrupt_ChB == NA)
 									{
 										TIMSK &= ~0x10;
 									}
@@ -1241,7 +1241,7 @@ uint8 TIMER_init(void)
 								{
 									OCR2 = TIMER_cnfg_arr[Loop_index].OCR_ChA;
 								}
-								if(TIMER_cnfg_arr[Loop_index].OCR_ChA == 0xFF)
+								else if(TIMER_cnfg_arr[Loop_index].OCR_ChA == 0xFF)
 								{
 
 								}
@@ -1732,44 +1732,44 @@ uint8 TIMER_stop(uint8 TIMER_ID)
 
 uint8 CHANGE_PWM(uint8 TIMER_ID,uint8 PWM_DUTYCYCLE_chA)
 {
+	TIMER_stop(TIMER_ID);
 	uint8 retval=OK;
-	if(0<=PWM_DUTYCYCLE_chA <= 100)
+	if((PWM_DUTYCYCLE_chA >= 0) && (PWM_DUTYCYCLE_chA <= 100))
 	{
 		switch(TIMER_ID)
-				{
-				case TIMER0:
-					 TCCR0 = 0x48;
-					 TCCR0 |= (1<<TCCR0_COM01);
+		{
+		case TIMER0:
+			TCCR0 = 0x48;
+			TCCR0 |= (1<<TCCR0_COM01);
 
-					/*
-					 * Setting the Duty Cycle
-					 */
-					OCR0 = (255 * PWM_DUTYCYCLE_chA)/100;
-				break;
+			/*
+			 * Setting the Duty Cycle
+			 */
+			OCR0 = (255.0 * PWM_DUTYCYCLE_chA)/100;
+			break;
 
-				case TIMER1:
-
-					TCCR1A=0b00000010;
-					TCCR1A |= (1u<<TCCR1A_COM1A1);
-					/*
-					 * Setting the Duty Cycle
-					 */
-					OCR1AL = (0x3ff * PWM_DUTYCYCLE_chA)/100;
-
-
-				break;
-				case TIMER2:
-					TCCR2 = 0x48;
-					TCCR2 |= (1<<TCCR2_COM21);
-					OCR2 = (255 * PWM_DUTYCYCLE_chA)/100;
+		case TIMER1:
+			TCCR1A=0b00000011;
+			TCCR1A |= (1u<<TCCR1A_COM1A1);
+			/*
+			 * Setting the Duty Cycle
+			 */
+			OCR1AL = (0x3ff * PWM_DUTYCYCLE_chA*1.0)/100;
 
 
-				break;
+			break;
+		case TIMER2:
+			TCCR2 = 0x48;
+			TCCR2 |= (1<<TCCR2_COM21);
+			OCR2 = (255.0 * PWM_DUTYCYCLE_chA)/100;
 
-				default:
-					retval = NOK;
-				break;
-				}
+
+			break;
+
+		default:
+			retval = NOK;
+			break;
+		}
 
 	}
 
@@ -1777,6 +1777,7 @@ uint8 CHANGE_PWM(uint8 TIMER_ID,uint8 PWM_DUTYCYCLE_chA)
 	{
 		retval = NOK;
 	}
+	TIMER_start(TIMER_ID);
 	return retval;
 }
 
