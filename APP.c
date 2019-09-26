@@ -1,16 +1,51 @@
+/********************************************************************
+ * Project Name:		MovingCar									*
+ *																	*
+ * Project Description:	A car moving forward for 10seconds then		*
+ * 						reverse for 10seconds						*
+ *																	*
+ * Project Author: 		Mostafa Khalil &							*
+ * 						Mahmoud Rezk								*
+ ********************************************************************/
 
-#include "DIO.h"
-#include "TIMER.h"
+#include "SevenSegment.h"
+#include "Motor.h"
+#include "Service.h"
+
 
 void main(void)
 {
-	DDRB = 0xFF;
-	DDRC = 0xFF;
-	DIO_init();
-	uint8 value = TIMER_init();
-	DIO_write(PORT_A,PIN5,value);
+	uint8 sevenSegmentValue = 0;
+	uint8 motorDirectionFlag = FORWARD;
+
+	SERVICE_init();
+	//MOTOR_init();
+	MOTOR_Forward(MOTOR1);
+
 	while(1)
 	{
+		SEVEN_SEGMENT_displayDigit(sevenSegmentValue);
+		Delay(TIMER0,10000);
+
+		if(motorDirectionFlag == FORWARD)
+		{
+			sevenSegmentValue++;
+			if(sevenSegmentValue == 9)
+			{
+				motorDirectionFlag = REVERSE;
+				MOTOR_Reverse(MOTOR1);
+			}
+		}
+
+		else if(motorDirectionFlag == REVERSE)
+		{
+			sevenSegmentValue--;
+			if(sevenSegmentValue == 0)
+			{
+				motorDirectionFlag = FORWARD;
+				MOTOR_Forward(MOTOR1);
+			}
+		}
 
 	}
 
