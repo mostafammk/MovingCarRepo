@@ -1,9 +1,13 @@
-/*
- * DIO.c
- *
- * Created: 9/13/2019 10:49:12 AM
- *  Author: Peter
- */ 
+/********************************************************************
+ * File Name:			DIO Driver Static Code .C File				*
+ *																	*
+ * File Description:	This file is used to initialize all the pins*
+ * 						based on the config file.					*
+ * 						Used also to write and read each pin		*
+ *																	*
+ * Author: 				Mostafa Khalil &							*
+ * 						Mahmoud Rezk								*
+ ********************************************************************/
 
 #include "DIO.h"
 

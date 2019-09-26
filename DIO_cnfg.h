@@ -1,9 +1,12 @@
-/*
- * DIO_cnfg.h
- *
- * Created: 9/13/2019 10:49:33 AM
- *  Author: Peter
- */ 
+/********************************************************************
+ * File Name:			DIO Driver Configuration .h File			*
+ *																	*
+ * File Description:	This file is used to configure the state	*
+ * 						of each pin and the initial value			*
+ *																	*
+ * Author: 				Mostafa Khalil &							*
+ * 						Mahmoud Rezk								*
+ ********************************************************************/
 
 
 #ifndef DIO_CNFG_H_
@@ -11,7 +14,7 @@
 
 #include "STD_TYPES.h"
 
-typedef enum {led,motor,button,oc,NUM_OF_PINS}PINS_t;
+typedef enum {SS1,SS2,SS3,SS4,SSEN,motorEN,motor1,motor2,NUM_OF_PINS}PINS_t;
 
 #define PORT_A		0
 #define PORT_B		1
