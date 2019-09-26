@@ -9,7 +9,7 @@
 #define SERVICE_H_
 #include "DIO.h"
 #include "TIMER.h"
-#include "Segment.h"
+
 
 uint8 Delay(uint8 TIMER_ID,uint32 Delay);
 #endif /* SERVICE_H_ */
